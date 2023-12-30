@@ -283,8 +283,10 @@ def main():
 
         confirm = input("\n\nPublish commit? [y/n]\n> ")
         if confirm.lower() not in ["y", "yes"]:
-            print("\n\n\033[1mCommit Aborted\033[0m\n\n\n")
+            print("\n\n\n\033[1mCommit Aborted, reverting...\033[0m\n\n\n")
             revert()
+            move_cursor_up(4)
+            print(f"{fill_line_full_width('✔ All changes reverted')}\n\n\n")
             return
 
         Utils.task_print("Pushing to Github")
