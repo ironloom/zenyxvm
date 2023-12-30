@@ -164,6 +164,20 @@ def select_from_range(nums_dict: dict[int, str]):
 
     return keyslist[current]
 
+def __delete_files_in_folder(folder_path):
+    try:
+        # Get the list of files in the folder
+        files = os.listdir(folder_path)
+
+        # Iterate through the files and delete each one
+        for file_name in files:
+            file_path = os.path.join(folder_path, file_name)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+        print(f"All files in {folder_path} have been deleted.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 def main():
     try:
@@ -280,6 +294,9 @@ def main():
             return
 
         Utils.task_print("Pushing to PyPi")
+
+        print(colored("Removing ./dist/*", attrs=["dark"]))
+        __delete_files_in_folder("dist")
 
         print(colored("> python -m build", attrs=["dark"]))
         os.system("python -m build")
