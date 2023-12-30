@@ -92,6 +92,11 @@ def move_cursor_up(lines):
     sys.stdout.write(f"\033[{lines}A")
 
 
+def fill_line_full_width(content: str):
+    spaces = os.get_terminal_size().columns - len(content)
+    return content + " " * spaces
+
+
 can_press: bool = True
 
 
@@ -153,7 +158,7 @@ def select_from_range(nums_dict: dict[int, str]):
 
     move_cursor_up(len(keyslist))
     for i in range(len(keyslist)):
-        print("                             ")
+        print(fill_line_full_width(""))
     move_cursor_up(len(keyslist))
 
     print(f"✔ {nums_dict[keyslist[current]]}")
@@ -163,6 +168,7 @@ def select_from_range(nums_dict: dict[int, str]):
     print("\033[0m", end="")
 
     return keyslist[current]
+
 
 def __delete_files_in_folder(folder_path):
     try:
@@ -178,6 +184,7 @@ def __delete_files_in_folder(folder_path):
         print(f"All files in {folder_path} have been deleted.")
     except Exception as e:
         print(f"An error occurred: {e}")
+
 
 def main():
     try:
@@ -210,26 +217,33 @@ def main():
             if cf.lower() in ["y", "yes"]:
                 publish_to_pypi = True
                 move_cursor_up(2)
-                print(colored("Publish to PyPi? [y/n]", attrs=["dark"]))
-                print(f"✔ Publishing to PyPi\n")
+                print(
+                    fill_line_full_width(
+                        colored("Publish to PyPi? [y/n]", attrs=["dark"])
+                    )
+                )
+                print(fill_line_full_width(f"✔ Publishing to PyPi\n"))
 
             if publish_to_pypi:
                 print("Publish to PyPi Test Branch? [y/n]")
                 print(colored('"yes" by default', attrs=["dark"]))
                 cf2 = input("> ")
                 move_cursor_up(3)
-                print(colored("Publish to PyPi Test Branch? [y/n]", attrs=["dark"]))
+                print(
+                    fill_line_full_width(
+                        colored("Publish to PyPi Test Branch? [y/n]", attrs=["dark"])
+                    )
+                )
                 if cf2.lower() in ["n", "no"]:
                     pypi_test = False
                     print(
-                        f"✔ Publishing to PyPi {colored('LIVE BRANCH', attrs=['bold'])}"
+                        fill_line_full_width(
+                            f"✔ Publishing to PyPi {colored('LIVE BRANCH', attrs=['bold'])}"
+                        )
                     )
                 else:
-                    print(
-                        f"✔ Publishing to PyPi Test Branch"
-                    )
-                print("                 ")
-
+                    print(fill_line_full_width(f"✔ Publishing to PyPi Test Branch"))
+                print(fill_line_full_width(""))
 
         elif update_type <= 4 and update_type >= 3:
             new_v = option_dict[update_type]
@@ -302,15 +316,16 @@ def main():
         os.system("python -m build")
 
         if pypi_test:
-            print(colored("> python -m twine upload --verbose --repository testpypi dist/*", attrs=["dark"]))
+            print(
+                colored(
+                    "> python -m twine upload --verbose --repository testpypi dist/*",
+                    attrs=["dark"],
+                )
+            )
             os.system("python -m twine upload --verbose --repository testpypi dist/*")
         else:
             print(colored("> python -m twine upload --verbose dist/*", attrs=["dark"]))
             os.system("python -m twine upload --verbose dist/*")
-        
-
-
-
 
     except ValueError:
         revert()
