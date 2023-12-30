@@ -211,7 +211,7 @@ def main():
             print(
                 f"\nVersison updated: {old_version} ⟹  {colored(str(new_v), attrs=['bold'])}"
             )
-            time.sleep(0.4)
+            time.sleep(0.2)
 
             cf = input("\n\nPublish to PyPi? [y/n]\n> ")
             if cf.lower() in ["y", "yes"]:
@@ -253,18 +253,20 @@ def main():
         print(f"\n\n{colored('Setting Commit Message', attrs=['bold'])} / Title\n")
         print(colored("Set commit title", attrs=["dark"]))
         commit_title: str = input("> ")
+        move_cursor_up(1)
         if commit_title == "":
             raise ValueError
-        print(f"\nCommit title set to: {commit_title}")
-        time.sleep(0.4)
+        print(f"✔ \"{commit_title}\"")
+        time.sleep(0.2)
 
         print(
             f"\n\n\n{colored('Setting Commit Message', attrs=['bold'])} / Description\n"
         )
         print(colored("Set commit description", attrs=["dark"]))
         commit_description: str = input(f"> ")
-        print(f"\nCommit description set to: {commit_description}")
-        time.sleep(0.4)
+        move_cursor_up(1)
+        print(f"✔ \"{commit_description}\"")
+        time.sleep(0.2)
 
         amend_text = ""
         if update_type == 3:
