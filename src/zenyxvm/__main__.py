@@ -51,13 +51,14 @@ def get_version() -> str:
         content = rf.read()
         content_list: list[str] = content.split('version = "')
 
-        old_version = content_list[1][:5]
+        old_version = content_list[1].split("\"")[0]
         return old_version
 
 
 def __update_version(update_type: 0 or 1 or 2):
-    current = get_version()
-    __new_version = [int(current[0]), int(current[2]), int(current[4])]
+    current_str = get_version()
+    current = current_str.split(".")
+    __new_version = [int(current[0]), int(current[1]), int(current[2])]
 
     __new_version[abs(-2 + update_type)] += 1
     new_version = []
@@ -80,7 +81,7 @@ def __update_version(update_type: 0 or 1 or 2):
         old_info = copy.copy(file.read())
         file.seek(0)
         version_replaced: str = file.read().replace(
-            f'version = "{current}"', 'version = "' + ".".join(new_version) + '"'
+            f'version = "{current_str}"', 'version = "' + ".".join(new_version) + '"'
         )
         file.seek(0)
         file.write(version_replaced)
