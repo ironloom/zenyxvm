@@ -220,6 +220,7 @@ def main():
             time.sleep(0.2)
 
             if answer == 0:
+                publish_to_pypi = True
                 branches = {0: "Test", 1: "Main"}
                 print(colored("\n\nSelect Branch", attrs=["dark"]))
                 answer2 = select_from_range(branches)
