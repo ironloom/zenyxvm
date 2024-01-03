@@ -213,36 +213,18 @@ def main():
             )
             time.sleep(0.2)
 
-            cf = input("\n\nPublish to PyPi? [y/n]\n> ")
-            if cf.lower() in ["y", "yes"]:
-                publish_to_pypi = True
-                move_cursor_up(2)
-                print(
-                    fill_line_full_width(
-                        colored("Publish to PyPi? [y/n]", attrs=["dark"])
-                    )
-                )
-                print(fill_line_full_width(f"✔ Publishing to PyPi\n"))
+            publish_dict = {0: "Yes", 1: "No"}
+            print(colored("\n\nPublish to PyPi?", attrs=["dark"]))
+            answer = select_from_range(publish_dict)
+            time.sleep(0.2)
 
-            if publish_to_pypi:
-                print("Publish to PyPi Test Branch? [y/n]")
-                print(colored('"yes" by default', attrs=["dark"]))
-                cf2 = input("> ")
-                move_cursor_up(3)
-                print(
-                    fill_line_full_width(
-                        colored("Publish to PyPi Test Branch? [y/n]", attrs=["dark"])
-                    )
-                )
-                if cf2.lower() in ["n", "no"]:
+            if answer == 0:
+                branches = {0: "Test", 1: "Main"}
+                print(colored("\n\nSelect Branch", attrs=["dark"]))
+                answer2 = select_from_range(branches)
+                time.sleep(0.2)
+                if answer2 == 1:
                     pypi_test = False
-                    print(
-                        fill_line_full_width(
-                            f"✔ Publishing to PyPi {colored('LIVE BRANCH', attrs=['bold'])}"
-                        )
-                    )
-                else:
-                    print(fill_line_full_width(f"✔ Publishing to PyPi Test Branch"))
                 print(fill_line_full_width(""))
 
         elif update_type <= 4 and update_type >= 3:
@@ -281,8 +263,11 @@ def main():
         if new_v != "":
             print(f"\n{colored('New commit version/type:', attrs=['dark'])}\n{new_v}")
 
-        confirm = input("\n\nPublish commit? [y/n]\n> ")
-        if confirm.lower() not in ["y", "yes"]:
+        publish_dict = {0: "Yes", 1: "No"}
+        print(colored("\n\nPublish to Commit?", attrs=["dark"]))
+        answer3 = select_from_range(publish_dict)
+        time.sleep(0.2)
+        if answer3 == 1:
             print("\n\n\n\033[1mCommit Aborted, reverting...\033[0m\n\n\n")
             revert()
             move_cursor_up(4)
